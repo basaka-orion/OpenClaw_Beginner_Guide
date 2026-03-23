@@ -34,9 +34,9 @@
 |---------|--------|------|-------------|
 | 💻 David | 写小程序代码 | DeepSeek V3.2 | 编程能力强 |
 | 📊 Nova | 算成本、出报表 | DeepSeek V3.2 | 逻辑推理好 |
-| ✍️ Steve | 写公众号推文 | MiniMax M2.5 | 中文写作好 |
-| 🎨 Shenmu | 画新品海报 | MiniMax M2.5 | 创意好 |
-| 💬 Miya | 回答客户问题 | MiniMax M2.5 | 回复快 |
+| ✍️ Steve | 写公众号推文 | MiniMax M2.7 | 中文写作好 |
+| 🎨 Shenmu | 画新品海报 | MiniMax M2.7 | 创意好 |
+| 💬 Miya | 回答客户问题 | MiniMax M2.7 | 回复快 |
 
 ---
 

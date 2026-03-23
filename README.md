@@ -1,6 +1,7 @@
-# 🦞 OpenClaw 探索实验室
+# 🦞 OpenClaw Beginner Guide — 小白也能搭建 AI 机器人团队
 
-> **一个普通人从零开始，搭建 AI 机器人团队的真实记录**
+> **零基础保姆级教程：从零开始，搭建你自己的 AI 团队**
+> **小学生都能看懂！**
 
 ```
 "AI 不应该是一个什么都干的超人，而应该是一支各有专长的团队。"
@@ -90,7 +91,7 @@
 
 - **核心框架**：[OpenClaw](https://github.com/openclaw/openclaw)
 - **通讯渠道**：Telegram Bot API
-- **AI 模型**：DeepSeek V3.2 / MiniMax M2.5 / Gemini Flash
+- **AI 模型**：DeepSeek V3.2 / MiniMax M2.7 / Gemini Flash
 - **记忆系统**：LanceDB Pro (向量数据库 + 混合检索)
 - **工作流引擎**：Antfarm (多Agent自动化流水线)
 - **运行环境**：macOS (Apple Silicon)

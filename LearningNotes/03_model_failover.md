@@ -52,7 +52,7 @@ AI 模型不是永远在线的，它可能因为：
   "model": {
     "primary": "deepseek-v3.2",         // 主力：深度求索
     "fallbacks": [
-      "minimax-m2.5",                    // 替补1：MiniMax
+      "minimax-m2.7",                    // 替补1：MiniMax
       "siliconflow/deepseek-v3"          // 替补2：另一个通道的深度求索
     ]
   }
@@ -70,7 +70,7 @@ AI 模型不是永远在线的，它可能因为：
       挂了？
        │
        ▼
-  MiniMax M2.5 → 正常？→ 回答你 ✅
+  MiniMax M2.7 → 正常？→ 回答你 ✅
        │
       也挂了？
        │
@@ -95,10 +95,10 @@ AI 模型不是永远在线的，它可能因为：
 
 | AI 助手 | 主力模型 | 替补1 | 替补2 |
 |---------|---------|-------|-------|
-| 🦞 Miya | MiniMax M2.5 | DeepSeek V3.2 | SF/DeepSeek V3 |
-| 💎 David | DeepSeek V3.2 | MiniMax M2.5 | SF/DeepSeek V3 |
-| 🌌 Nova | DeepSeek V3.2 | MiniMax M2.5 | SF/DeepSeek V3 |
-| 🎨 Shenmu | MiniMax M2.5 | DeepSeek V3.2 | SF/DeepSeek V3 |
+| 🦞 Miya | MiniMax M2.7 | DeepSeek V3.2 | SF/DeepSeek V3 |
+| 💎 David | DeepSeek V3.2 | MiniMax M2.7 | SF/DeepSeek V3 |
+| 🌌 Nova | DeepSeek V3.2 | MiniMax M2.7 | SF/DeepSeek V3 |
+| 🎨 Shenmu | MiniMax M2.7 | DeepSeek V3.2 | SF/DeepSeek V3 |
 
 **每个 AI 至少 3 个模型兜底，三个同时挂的概率接近于零。**
 
