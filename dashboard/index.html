@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OpenClaw AI 机器人团队指挥中心 (小白友好版)</title>
+
+<!-- GSAP Animation Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
 <style>
 /* Reset & Base */
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -549,24 +553,14 @@ body::before {
 /* Custom Modal */
 .modal-overlay {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.8);
-  backdrop-filter: blur(5px);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  opacity: 0;
-  transition: opacity 0.3s;
+  background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 9999; visibility: hidden; opacity: 0;
 }
-.modal-overlay.active { display: flex; opacity: 1; }
 .modal-content {
-  background: #111827;
-  border: 1px solid var(--color-orange);
-  border-radius: 8px;
-  padding: 24px;
-  width: 400px;
-  box-shadow: 0 0 30px rgba(255,112,67,0.3);
-  position: relative;
+  background: #111827; border: 1px solid var(--color-orange); border-radius: 8px;
+  padding: 24px; width: 400px; box-shadow: 0 0 30px rgba(255,112,67,0.3); position: relative;
+  transform: scale(0.8);
 }
 .modal-close {
   position: absolute; top: 10px; right: 15px;
@@ -898,78 +892,119 @@ body::before {
 </div>
 
 <script>
-// --- Interaction Logic ---
+// GSAP Initialization
+document.addEventListener("DOMContentLoaded", (event) => {
+  gsap.registerPlugin(TextPlugin);
+
+  // 1. Entrance Animations: Timeline for sequencing
+  const tl = gsap.timeline();
+  
+  // Stagger the top status bars
+  tl.from(".stat-box", { y: -50, opacity: 0, duration: 0.6, stagger: 0.1, ease: "back.out(1.7)" })
+    // Slide in the side panels
+    .from(".side-panel", { x: -50, opacity: 0, duration: 0.5, ease: "power2.out" }, "-=0.2")
+    .from(".right-panel", { x: 50, opacity: 0, duration: 0.5, ease: "power2.out" }, "-=0.5")
+    // Fade in center panel
+    .from(".center-panel", { scale: 0.9, opacity: 0, duration: 0.6, ease: "power3.out" }, "-=0.3");
+
+  // 2. Animate the bar charts widths inside horizontal charts
+  document.querySelectorAll(".bar-fill").forEach(fill => {
+    // Read the width set in inline style (e.g. style="width:85%; background:...")
+    const w = fill.style.width;
+    gsap.from(fill, { width: 0, duration: 1.5, ease: "power2.out", delay: 0.8 });
+  });
+
+  // 3. Float animation via GSAP
+  gsap.to(".isometric-image", {
+    y: -15, duration: 3, ease: "sine.inOut", yoyo: true, repeat: -1
+  });
+
+  // 4. Pulse animation for active dot
+  gsap.to(".online-indicator", {
+    scale: 1.5, opacity: 0.5, duration: 0.8, ease: "power1.inOut", yoyo: true, repeat: -1
+  });
+
+  // Add subtle hover micro-interactions via GSAP to elements
+  document.querySelectorAll(".stat-box:not(.logo-box), .box-item, .list-row, .meter, .bar-row, .alarm-box").forEach(el => {
+    el.addEventListener("mouseenter", () => gsap.to(el, { scale: 1.02, duration: 0.2, ease: "power1.out" }));
+    el.addEventListener("mouseleave", () => gsap.to(el, { scale: 1, duration: 0.2, ease: "power1.out" }));
+  });
+});
+
+// --- Enhanced Interaction Logic via GSAP ---
 function switchIp(el, desc, ipStr) {
-  // Update button classes
   document.querySelectorAll('.ip-node').forEach(node => node.classList.remove('active'));
   el.classList.add('active');
   
-  // Update text
   document.getElementById('currentIpValue').innerHTML = `${ipStr} <span style="font-size:14px; color:#fff; font-weight:normal; background:#333; padding:2px 8px; border-radius:4px;">当前您正在看的机器</span>`;
-  document.getElementById('currentIpDesc').innerText = desc + " - 这台机器现在一切顺利";
+  
+  // Text scramble/typewriter effect via GSAP TextPlugin
+  gsap.to('#currentIpDesc', { duration: 0.8, text: desc + " - 这台机器现在一切顺利", ease: "none" });
   
   // Flash effect on center graphic
-  const img = document.querySelector('.isometric-image');
-  img.style.filter = "drop-shadow(0 0 80px rgba(0, 230, 118, 0.6))";
-  setTimeout(() => {
-    img.style.filter = "drop-shadow(0 0 40px rgba(255, 112, 67, 0.25))";
-  }, 500);
+  gsap.fromTo(".isometric-image", 
+    { filter: "drop-shadow(0 0 80px rgba(0, 230, 118, 0.6))" },
+    { filter: "drop-shadow(0 0 40px rgba(255, 112, 67, 0.25))", duration: 1, ease: "power2.out" }
+  );
 }
 
-// Modal handling
+// GSAP enhanced Modal
 function showModal(title, bodyText) {
   document.getElementById('modalTitle').innerText = title;
   document.getElementById('modalBody').innerHTML = bodyText;
-  document.getElementById('myModal').classList.add('active');
+  
+  const overlay = document.getElementById('myModal');
+  overlay.style.visibility = "visible";
+  
+  gsap.to(overlay, { opacity: 1, duration: 0.2 });
+  gsap.fromTo("#modalContent", 
+    { y: -30, scale: 0.9, opacity: 0 },
+    { y: 0, scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.5)" }
+  );
 }
-function closeModal() { document.getElementById('myModal').classList.remove('active'); }
+
+function closeModal() { 
+  const overlay = document.getElementById('myModal');
+  gsap.to("#modalContent", { y: -20, scale: 0.9, opacity: 0, duration: 0.2, ease: "power1.in" });
+  gsap.to(overlay, { opacity: 0, duration: 0.2, onComplete: () => overlay.style.visibility = "hidden" });
+}
+
 document.getElementById('myModal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
 
-// --- Fake Real-Time Live Data Animation ---
+// --- Fake Real-Time Live Data Animation via GSAP ---
 setInterval(() => {
-  // Randomly twitch some numbers to make it feel alive!
-  
   // Speed
   const speedEl = document.getElementById('valSpeed');
   let speed = parseFloat(speedEl.innerText);
   speed += (Math.random() * 10 - 5);
   if(speed < 400) speed = 400; if(speed > 600) speed = 600;
-  speedEl.innerText = speed.toFixed(1);
-  animateEl(speedEl);
+  gsap.to(speedEl, { innerText: speed.toFixed(1), duration: 0.5, snap: { innerText: 0.1 } });
   
   // Ping
   const pingEl = document.getElementById('valPing');
   let ping = parseFloat(pingEl.innerText);
   ping += (Math.random() * 0.4 - 0.2);
   if(ping < 1.0) ping = 1.0; if(ping > 5.0) ping = 5.0;
-  pingEl.innerText = ping.toFixed(1);
-  if(ping > 3.5) pingEl.className = "number text-red";
-  else pingEl.className = "number text-green";
+  gsap.to(pingEl, { innerText: ping.toFixed(1), duration: 0.5, snap: { innerText: 0.1 } });
+  pingEl.className = ping > 3.5 ? "number text-red" : "number text-green";
 
-  // Latency
+  // Latency (Integer)
   const latEl = document.getElementById('valLat');
   let lat = parseInt(latEl.innerText);
   lat += Math.floor(Math.random() * 6 - 3);
   if(lat < 10) lat = 10; if(lat > 60) lat = 60;
-  latEl.innerText = lat + "ms";
-  animateEl(latEl);
+  gsap.to(latEl, { innerText: lat, duration: 0.5, snap: { innerText: 1 } });
   
-  // Concurrent
+  // Concurrent (Integer)
   const concEl = document.getElementById('valConcurrent');
   let conc = parseInt(concEl.innerText);
   conc += Math.floor(Math.random() * 4 - 2);
   if(conc < 300) conc = 300; if(conc > 350) conc = 350;
-  concEl.innerText = conc;
+  gsap.to(concEl, { innerText: conc, duration: 0.5, snap: { innerText: 1 } });
 
 }, 2500);
-
-function animateEl(el) {
-  el.classList.remove('animate-pop');
-  void el.offsetWidth; // trigger reflow
-  el.classList.add('animate-pop');
-}
 </script>
 
 </body>
